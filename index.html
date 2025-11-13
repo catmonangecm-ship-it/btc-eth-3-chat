@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bot Trading Multi-Crypto Pro - Telegram Chat</title>
+    <title>Bot Trading Multi-Crypto Pro - Version Complète</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -38,17 +38,15 @@
 </head>
 <body class="text-white p-4 md:p-6">
     <div class="max-w-7xl mx-auto">
-        <!-- Header avec boutons de chat -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
             <div>
                 <h1 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
                     Bot Trading Multi-Crypto Pro
                 </h1>
-                <p class="text-gray-400 mt-2">Trading réel BSC • Prix temps réel • Chat Telegram Live</p>
+                <p class="text-gray-400 mt-2">Trading réel BSC • Prix temps réel • Trading automatique 24/7</p>
             </div>
             
-            <div class="flex gap-3 flex-wrap">
-                <!-- Bouton Telegram Channel -->
+            <div class="flex gap-3">
                 <button onclick="openTelegramChannel()" class="flex items-center gap-2 px-4 py-3 telegram-gradient hover:opacity-90 rounded-lg font-semibold transition-all shadow-lg">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
@@ -57,17 +55,9 @@
                     <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full pulse">LIVE</span>
                 </button>
                 
-                <!-- Bouton Telegram Bot -->
-                <button onclick="openTelegramBot()" class="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-lg font-semibold transition-all">
-                    <span>🤖</span>
-                    <span>Bot Telegram</span>
-                </button>
-                
-                <!-- Bouton Chat Intégré -->
-                <button onclick="openIntegratedChat()" class="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 rounded-lg font-semibold transition-all">
+                <button onclick="openChat()" class="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 rounded-lg font-semibold transition-all">
                     <span>💬</span>
-                    <span>Chat Live</span>
-                    <span id="unreadBadge" class="hidden bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+                    Chat Live
                 </button>
                 
                 <button onclick="openDCASwap()" class="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-lg font-semibold transition-all">
@@ -80,33 +70,6 @@
                     <span>👛</span>
                     <span id="walletText">Connecter MetaMask</span>
                 </button>
-            </div>
-        </div>
-
-        <!-- Bannière Telegram Info -->
-        <div class="bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-2 border-blue-500 rounded-xl p-6 mb-6">
-            <div class="flex items-start gap-4">
-                <div class="text-4xl">📱</div>
-                <div class="flex-1">
-                    <h3 class="text-xl font-bold mb-2 flex items-center gap-2">
-                        Rejoignez notre communauté Telegram !
-                    </h3>
-                    <p class="text-gray-300 mb-4">
-                        🎯 Signaux de trading en temps réel<br>
-                        📊 Analyses techniques quotidiennes<br>
-                        💡 Conseils et stratégies de la communauté<br>
-                        🤖 Commandes bot automatiques<br>
-                        👥 <span id="telegramMembersCount" class="text-green-400 font-bold">1,234</span> membres actifs
-                    </p>
-                    <div class="flex gap-3">
-                        <button onclick="openTelegramChannel()" class="px-6 py-2 telegram-gradient hover:opacity-90 rounded-lg font-semibold transition-all">
-                            Rejoindre le Canal
-                        </button>
-                        <button onclick="openTelegramBot()" class="px-6 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg font-semibold transition-all">
-                            Démarrer le Bot
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -327,103 +290,57 @@
                 </div>
             </div>
 
-            <!-- Sidebar with Telegram Chat Widget (right) -->
-            <div class="space-y-6">
-                <!-- Telegram Chat Widget -->
-                <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6">
-                    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
-                        <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
-                        </svg>
-                        Telegram Live
-                    </h2>
+            <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6">
+                <h2 class="text-2xl font-bold mb-4">Paramètres</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">% par trade</label>
+                        <input type="number" id="tradePercent" value="10" min="1" max="100" onchange="updateTradeAmount()" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-400">
+                        <p class="text-xs text-gray-400 mt-1">Montant: $<span id="tradeAmount">0</span></p>
+                    </div>
                     
-                    <div class="space-y-3">
-                        <div class="bg-gradient-to-r from-blue-500/20 to-blue-600/20 border border-blue-500/50 rounded-lg p-4">
-                            <p class="text-sm text-blue-200 mb-2">
-                                <span class="text-green-400">●</span> <span id="telegramOnline">847</span> en ligne
-                            </p>
-                            <p class="text-xs text-gray-400">
-                                Derniers signaux et discussions de la communauté
-                            </p>
-                        </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">Slippage (%)</label>
+                        <input type="number" id="slippage" value="1" step="0.1" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-400">
+                        <p class="text-xs text-gray-400 mt-1">⚠️ Recommandé: 1-2% pour tokens volatils</p>
+                    </div>
+                </div>
 
-                        <!-- Telegram Messages Preview -->
-                        <div id="telegramPreview" class="space-y-2 max-h-60 overflow-y-auto">
-                            <!-- Messages will be loaded here -->
-                        </div>
-
-                        <button onclick="openIntegratedChat()" class="w-full px-4 py-3 telegram-gradient hover:opacity-90 rounded-lg font-semibold transition-all flex items-center justify-center gap-2">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
-                            </svg>
-                            Ouvrir le Chat Complet
-                        </button>
-
-                        <div class="flex gap-2">
-                            <button onclick="openTelegramChannel()" class="flex-1 px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm transition-all">
-                                📢 Canal
-                            </button>
-                            <button onclick="openTelegramBot()" class="flex-1 px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm transition-all">
-                                🤖 Bot
-                            </button>
+                <div class="mt-6 p-4 bg-green-400/10 border border-green-400/30 rounded-lg">
+                    <div class="flex gap-2">
+                        <span class="text-green-400">💰</span>
+                        <div class="text-sm text-gray-300">
+                            <p class="font-semibold text-green-400">Soldes</p>
+                            <p>BNB: <span id="bnbBalance">0</span></p>
+                            <p>USDT: $<span id="usdtBalance">0</span></p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Settings Section -->
-                <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6">
-                    <h2 class="text-2xl font-bold mb-4">Paramètres</h2>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm text-gray-400 mb-2">% par trade</label>
-                            <input type="number" id="tradePercent" value="10" min="1" max="100" onchange="updateTradeAmount()" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-400">
-                            <p class="text-xs text-gray-400 mt-1">Montant: $<span id="tradeAmount">0</span></p>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm text-gray-400 mb-2">Slippage (%)</label>
-                            <input type="number" id="slippage" value="1" step="0.1" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-400">
-                            <p class="text-xs text-gray-400 mt-1">⚠️ Recommandé: 1-2% pour tokens volatils</p>
+                <div class="mt-4 p-4 bg-blue-400/10 border border-blue-400/30 rounded-lg">
+                    <div class="flex gap-2">
+                        <span class="text-blue-400">📊</span>
+                        <div class="text-sm text-gray-300">
+                            <p class="font-semibold text-blue-400">Statut</p>
+                            <p>Wallet: <span id="walletStatus">🔴 Non connecté</span></p>
+                            <p>Mode: <span id="tradingTypeStatus">🟡 ...</span></p>
+                            <p>Position: <span id="positionStatus">⚪ Aucune</span></p>
+                            <p>Binance: <span id="apiStatus">🟡 ...</span></p>
+                            <p>Ethers: <span id="ethersStatus">🟡 ...</span></p>
                         </div>
                     </div>
+                </div>
 
-                    <div class="mt-6 p-4 bg-green-400/10 border border-green-400/30 rounded-lg">
-                        <div class="flex gap-2">
-                            <span class="text-green-400">💰</span>
-                            <div class="text-sm text-gray-300">
-                                <p class="font-semibold text-green-400">Soldes</p>
-                                <p>BNB: <span id="bnbBalance">0</span></p>
-                                <p>USDT: $<span id="usdtBalance">0</span></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 p-4 bg-blue-400/10 border border-blue-400/30 rounded-lg">
-                        <div class="flex gap-2">
-                            <span class="text-blue-400">📊</span>
-                            <div class="text-sm text-gray-300">
-                                <p class="font-semibold text-blue-400">Statut</p>
-                                <p>Wallet: <span id="walletStatus">🔴 Non connecté</span></p>
-                                <p>Mode: <span id="tradingTypeStatus">🟡 ...</span></p>
-                                <p>Position: <span id="positionStatus">⚪ Aucune</span></p>
-                                <p>Binance: <span id="apiStatus">🟡 ...</span></p>
-                                <p>Ethers: <span id="ethersStatus">🟡 ...</span></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 p-4 bg-red-400/10 border border-red-400/30 rounded-lg">
-                        <div class="flex gap-2">
-                            <span class="text-red-400">⚠️</span>
-                            <div class="text-xs text-gray-300">
-                                <p class="font-semibold text-red-400">ATTENTION</p>
-                                <p>• Risque de perte totale</p>
-                                <p>• Frais gas + slippage</p>
-                                <p>• Minimum 0.01 BNB pour gas</p>
-                                <p>• Commencez petit (10-50$)</p>
-                            </div>
+                <div class="mt-4 p-4 bg-red-400/10 border border-red-400/30 rounded-lg">
+                    <div class="flex gap-2">
+                        <span class="text-red-400">⚠️</span>
+                        <div class="text-xs text-gray-300">
+                            <p class="font-semibold text-red-400">ATTENTION</p>
+                            <p>• Risque de perte totale</p>
+                            <p>• Frais gas + slippage</p>
+                            <p>• Minimum 0.01 BNB pour gas</p>
+                            <p>• Commencez petit (10-50$)</p>
                         </div>
                     </div>
                 </div>
@@ -431,146 +348,49 @@
         </div>
     </div>
 
-    <!-- Modal Chat Telegram Intégré -->
-    <div id="telegramChatModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" style="z-index: 9999;">
-        <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl shadow-2xl w-full max-w-5xl h-[700px] flex flex-col border-2 border-blue-500/30">
-            <!-- Header Chat -->
-            <div class="telegram-gradient flex justify-between items-center p-6 rounded-t-2xl">
-                <div class="flex items-center gap-4">
-                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
-                    </svg>
-                    <div>
-                        <h2 class="text-2xl font-bold">
-                            Chat Communautaire Telegram
-                        </h2>
-                        <p class="text-sm text-blue-100 mt-1">
-                            <span class="text-green-300">●</span> 
-                            <span id="telegramOnlineCount">...</span> membres en ligne
-                        </p>
-                    </div>
+    <!-- Modal Chat Communautaire -->
+    <div id="chatModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" style="z-index: 9999;">
+        <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl h-[600px] flex flex-col border-2 border-purple-500/30">
+            <div class="flex justify-between items-center p-6 border-b border-slate-700">
+                <div>
+                    <h2 class="text-2xl font-bold bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent">
+                        💬 Chat Communautaire Live
+                    </h2>
+                    <p class="text-sm text-gray-400 mt-1">
+                        <span id="onlineCount" class="text-green-400">●</span> 
+                        <span id="onlineUsers">...</span> membres en ligne
+                    </p>
                 </div>
-                <button onclick="closeIntegratedChat()" class="text-white hover:bg-white/20 transition-all text-2xl rounded-lg px-3 py-1">✕</button>
+                <button onclick="closeChat()" class="text-gray-400 hover:text-white transition-all text-2xl hover:bg-red-500/20 rounded-lg px-3 py-1">✕</button>
             </div>
 
-            <!-- Tab Navigation -->
-            <div class="flex border-b border-slate-700 bg-slate-900/50">
-                <button onclick="switchTab('chat')" id="chatTab" class="flex-1 px-6 py-3 font-semibold transition-all border-b-2 border-blue-500 text-blue-400">
-                    💬 Discussion Générale
-                </button>
-                <button onclick="switchTab('signals')" id="signalsTab" class="flex-1 px-6 py-3 font-semibold transition-all border-b-2 border-transparent text-gray-400 hover:text-white">
-                    📊 Signaux Trading
-                </button>
-                <button onclick="switchTab('bot')" id="botTab" class="flex-1 px-6 py-3 font-semibold transition-all border-b-2 border-transparent text-gray-400 hover:text-white">
-                    🤖 Bot Commands
-                </button>
-            </div>
-
-            <!-- Chat Content Area -->
-            <div id="chatContent" class="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-900/50">
-                <!-- Messages will be loaded here -->
-            </div>
-
-            <!-- Bot Commands Quick Access -->
-            <div id="quickCommands" class="p-4 border-t border-slate-700 bg-slate-900/80">
-                <div class="flex gap-2 overflow-x-auto pb-2">
-                    <button onclick="sendTelegramCommand('/start')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm whitespace-nowrap transition-all">
-                        /start - Démarrer
-                    </button>
-                    <button onclick="sendTelegramCommand('/price BTC')" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm whitespace-nowrap transition-all">
-                        /price - Prix actuel
-                    </button>
-                    <button onclick="sendTelegramCommand('/signals')" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm whitespace-nowrap transition-all">
-                        /signals - Signaux
-                    </button>
-                    <button onclick="sendTelegramCommand('/stats')" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm whitespace-nowrap transition-all">
-                        /stats - Statistiques
-                    </button>
-                    <button onclick="sendTelegramCommand('/help')" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm whitespace-nowrap transition-all">
-                        /help - Aide
-                    </button>
+            <div id="chatMessages" class="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-900/50">
+                <div class="text-center text-gray-500 py-8">
+                    <p>💬 Chargement des messages...</p>
                 </div>
             </div>
 
-            <!-- Input Area -->
             <div class="p-4 border-t border-slate-700 bg-slate-900">
                 <div class="flex gap-3">
                     <input 
                         type="text" 
-                        id="telegramInput" 
-                        placeholder="Tapez votre message ou /commande..."
-                        class="flex-1 bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-400 text-white placeholder-gray-400"
-                        onkeypress="if(event.key === 'Enter') sendTelegramMessage()"
+                        id="chatInput" 
+                        placeholder="Tapez votre message..."
+                        class="flex-1 bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 focus:outline-none focus:border-green-400 text-white placeholder-gray-400"
+                        onkeypress="if(event.key === 'Enter') sendMessage()"
                     >
-                    <button onclick="sendTelegramMessage()" class="px-6 py-3 telegram-gradient hover:opacity-90 rounded-lg font-semibold transition-all">
+                    <button onclick="sendMessage()" class="px-6 py-3 bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 rounded-lg font-semibold transition-all">
                         Envoyer 📤
                     </button>
                 </div>
-                <p class="text-xs text-gray-500 mt-2 flex items-center gap-2">
-                    💡 Partagez vos analyses et recevez des signaux en temps réel
-                    <button onclick="showTelegramHelp()" class="text-blue-400 hover:underline">Voir les commandes</button>
+                <p class="text-xs text-gray-500 mt-2">
+                    💡 Partagez vos stratégies et analyses avec la communauté
                 </p>
             </div>
         </div>
     </div>
 
-    <!-- Modal Telegram Guide -->
-    <div id="telegramGuideModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" style="z-index: 10000;">
-        <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl shadow-2xl w-full max-w-2xl border-2 border-blue-500/30">
-            <div class="telegram-gradient p-6 rounded-t-2xl">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-2xl font-bold">🤖 Guide Telegram Bot</h2>
-                    <button onclick="closeTelegramGuide()" class="text-white hover:bg-white/20 rounded-lg px-3 py-1 text-2xl">✕</button>
-                </div>
-            </div>
-            
-            <div class="p-6 space-y-4 max-h-[500px] overflow-y-auto">
-                <div class="bg-blue-500/20 border border-blue-500 rounded-lg p-4">
-                    <h3 class="font-bold text-blue-300 mb-2">📱 Commandes Principales</h3>
-                    <div class="space-y-2 text-sm">
-                        <p><code class="bg-slate-700 px-2 py-1 rounded">/start</code> - Démarrer le bot</p>
-                        <p><code class="bg-slate-700 px-2 py-1 rounded">/price [CRYPTO]</code> - Prix actuel (ex: /price BTC)</p>
-                        <p><code class="bg-slate-700 px-2 py-1 rounded">/signals</code> - Signaux de trading du jour</p>
-                        <p><code class="bg-slate-700 px-2 py-1 rounded">/stats</code> - Vos statistiques de trading</p>
-                        <p><code class="bg-slate-700 px-2 py-1 rounded">/subscribe</code> - Notifications automatiques</p>
-                        <p><code class="bg-slate-700 px-2 py-1 rounded">/help</code> - Liste complète des commandes</p>
-                    </div>
-                </div>
-
-                <div class="bg-green-500/20 border border-green-500 rounded-lg p-4">
-                    <h3 class="font-bold text-green-300 mb-2">📊 Commandes Trading</h3>
-                    <div class="space-y-2 text-sm">
-                        <p><code class="bg-slate-700 px-2 py-1 rounded">/buy [CRYPTO] [AMOUNT]</code> - Ordre d'achat</p>
-                        <p><code class="bg-slate-700 px-2 py-1 rounded">/sell [CRYPTO] [AMOUNT]</code> - Ordre de vente</p>
-                        <p><code class="bg-slate-700 px-2 py-1 rounded">/portfolio</code> - Voir votre portfolio</p>
-                        <p><code class="bg-slate-700 px-2 py-1 rounded">/alert [CRYPTO] [PRICE]</code> - Alerte de prix</p>
-                    </div>
-                </div>
-
-                <div class="bg-purple-500/20 border border-purple-500 rounded-lg p-4">
-                    <h3 class="font-bold text-purple-300 mb-2">🎯 Fonctionnalités Premium</h3>
-                    <div class="space-y-2 text-sm">
-                        <p>✅ Signaux de trading en temps réel</p>
-                        <p>✅ Analyses techniques automatiques</p>
-                        <p>✅ Alertes personnalisées</p>
-                        <p>✅ Exécution d'ordres depuis Telegram</p>
-                        <p>✅ Rapports quotidiens de performance</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-6 border-t border-slate-700">
-                <button onclick="openTelegramBot()" class="w-full px-6 py-3 telegram-gradient hover:opacity-90 rounded-lg font-semibold transition-all">
-                    Ouvrir le Bot Telegram
-                </button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // ============================================
-        // CONFIGURATION PRINCIPALE
-        // ============================================
         const PANCAKE_ROUTER = '0x10ED43C718714eb63d5aA57B78B54704E256024E';
         const USDT_CONTRACT = '0x55d398326f99059fF775485246999027B3197955';
         const BSC_RPC = 'https://bsc-dataseed1.binance.org';
@@ -579,17 +399,11 @@
         const FREE_WALLET = '0xb44dd82c004a767d23b890f788fd6f9b13fcf6a4';
         const FREE_TRIAL_DAYS = 2;
 
-        // Telegram Configuration
         const TELEGRAM_CONFIG = {
             channelUrl: 'https://t.me/crypto_trading_signals_pro',
-            botUrl: 'https://t.me/CryptoTradingProBot',
-            botToken: 'YOUR_BOT_TOKEN',
-            chatId: 'YOUR_CHAT_ID'
+            botUrl: 'https://t.me/CryptoTradingProBot'
         };
 
-        // ============================================
-        // ÉTATS GLOBAUX
-        // ============================================
         let state = {
             account: null, 
             isConnected: false, 
@@ -632,21 +446,15 @@
             }
         };
 
-        let telegramState = {
-            currentTab: 'chat',
-            messages: [],
-            signals: [],
-            onlineUsers: 847,
-            unreadCount: 0,
-            username: '',
-            isConnected: false
-        };
-
         let ws = null, botInterval = null, lastTradeTime = 0;
         let tradingChart = null;
         let wakeLock = null;
         let audioContext = null;
         let positionUpdateInterval = null;
+        
+        let chatMessages = [];
+        let chatUsername = '';
+        let onlineUsersCount = 0;
 
         const POST_SELL_COOLDOWN = 120000;
         const MIN_TRADE_INTERVAL = 60000;
@@ -684,11 +492,8 @@
             }
         };
 
-        // ============================================
-        // INITIALISATION
-        // ============================================
         window.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 Bot chargé - Version COMPLÈTE avec Telegram');
+            console.log('🚀 Bot chargé - Version COMPLÈTE');
             console.log('💎 Trading limité à: BTC, ETH, BNB');
             console.log('⏱️ Attente 10 minutes après baisse détectée');
             console.log('🛡️ Protection anti-double achat');
@@ -701,19 +506,12 @@
             
             initChart();
             renderStrategies();
-            initializeTelegram();
-            startTelegramSimulation();
-            updateTelegramStats();
             
-            // Auto-connexion si wallet déjà connecté
             if (window.ethereum && window.ethereum.selectedAddress) {
                 connectWallet();
             }
         });
 
-        // ============================================
-        // WALLET FUNCTIONS
-        // ============================================
         async function connectWallet() {
             if (!window.ethereum) {
                 alert('❌ MetaMask non installé\n\nVeuillez installer MetaMask pour continuer.');
@@ -884,9 +682,6 @@
             alert('Fonction de paiement à implémenter');
         }
 
-        // ============================================
-        // UI FUNCTIONS
-        // ============================================
         function updateUI() {
             if (state.isConnected) {
                 document.getElementById('connectBtn').className = 
@@ -965,9 +760,6 @@
             renderStrategies();
         }
 
-        // ============================================
-        // CRYPTO FUNCTIONS
-        // ============================================
         async function fetchCryptoList() {
             document.getElementById('refreshIcon').classList.add('animate-spin');
             document.getElementById('refreshText').textContent = 'Chargement...';
@@ -1170,9 +962,6 @@
             tradingChart.update('none');
         }
 
-        // ============================================
-        // TRADING FUNCTIONS
-        // ============================================
         function togglePrivateKeyVisibility() {
             const input = document.getElementById('privateKeyInput');
             input.type = input.type === 'password' ? 'text' : 'password';
@@ -1298,7 +1087,6 @@
                 monitoring.highestPriceTime = now;
                 monitoring.isDropping = false;
                 monitoring.dropStartTime = 0;
-                console.log(`📈 Nouveau prix maximum: ${currentPrice.toFixed(2)}`);
                 return;
             }
             
@@ -1307,11 +1095,10 @@
             if (dropPercent >= MIN_DROP_PERCENTAGE && !monitoring.isDropping) {
                 monitoring.isDropping = true;
                 monitoring.dropStartTime = now;
-                console.log(`📉 Baisse détectée: ${dropPercent.toFixed(2)}% depuis ${monitoring.highestPrice.toFixed(2)}`);
+                console.log(`📉 Baisse détectée: ${dropPercent.toFixed(2)}%`);
             }
             
             if (monitoring.isDropping && currentPrice > monitoring.highestPrice * 0.995) {
-                console.log(`📈 Prix en remontée, réinitialisation du monitoring`);
                 monitoring.highestPrice = currentPrice;
                 monitoring.highestPriceTime = now;
                 monitoring.isDropping = false;
@@ -1324,7 +1111,7 @@
             const now = Date.now();
             
             if (!monitoring.isDropping) {
-                return { canBuy: false, reason: 'Prix stable ou en hausse', waitTime: 0 };
+                return { canBuy: false, reason: 'Prix stable', waitTime: 0 };
             }
             
             const timeElapsed = now - monitoring.dropStartTime;
@@ -1333,7 +1120,7 @@
             if (timeElapsed >= PRICE_DROP_WAIT_TIME) {
                 return { 
                     canBuy: true, 
-                    reason: `Baisse confirmée de ${dropPercent.toFixed(2)}% depuis ${Math.floor(timeElapsed / 60000)} minutes`,
+                    reason: `Baisse confirmée ${dropPercent.toFixed(2)}%`,
                     waitTime: 0
                 };
             }
@@ -1343,7 +1130,7 @@
             
             return { 
                 canBuy: false, 
-                reason: `Baisse de ${dropPercent.toFixed(2)}% détectée, attente ${remainingMinutes} min avant achat`,
+                reason: `Attente ${remainingMinutes} min`,
                 waitTime: remainingTime
             };
         }
@@ -1358,52 +1145,38 @@
             }
             
             if (state.currentPosition === 'BUY') {
-                console.log(`📊 Position LONG ouverte - RSI: ${rsi.toFixed(2)} - En attente de signal VENTE`);
-                
                 if (rsi > strategy.rsiSellThreshold) {
                     if (state.positionSold) {
-                        console.log(`🔒 Position déjà vendue - En attente de nouveau cycle`);
                         return { signal: null, confidence: 0 };
                     }
                     
                     const timeSinceBuy = now - state.lastBuyTime;
                     if (timeSinceBuy < MIN_TRADE_INTERVAL) {
-                        console.log(`⏱️ Délai minimum non respecté (${Math.ceil((MIN_TRADE_INTERVAL - timeSinceBuy) / 1000)}s restantes)`);
                         return { signal: null, confidence: 0 };
                     }
                     
                     if (state.positionAmount <= 0) {
-                        console.error('🚫 ERREUR: Position amount = 0, impossible de vendre');
                         state.currentPosition = null;
                         state.positionSold = false;
                         return { signal: null, confidence: 0 };
                     }
                     
-                    console.log(`🔴 Signal VENTE détecté - RSI: ${rsi.toFixed(2)} - Position: ${state.positionAmount} USDT`);
                     return { signal: 'SELL', confidence: 0.8 };
                 }
             } else if (state.currentPosition === null) {
                 if (rsi < strategy.rsiBuyThreshold) {
                     const timeSinceSell = now - state.lastSellTime;
                     if (timeSinceSell < MIN_TRADE_INTERVAL && state.lastSellTime > 0) {
-                        console.log(`⏱️ Délai minimum après vente (${Math.ceil((MIN_TRADE_INTERVAL - timeSinceSell) / 1000)}s restantes)`);
                         return { signal: null, confidence: 0 };
                     }
                     
                     const dropCheck = canBuyAfterDrop();
                     if (!dropCheck.canBuy) {
-                        console.log(`⏳ ${dropCheck.reason}`);
                         return { signal: null, confidence: 0 };
                     }
                     
-                    console.log(`🟢 Signal ACHAT validé - RSI: ${rsi.toFixed(2)} - ${dropCheck.reason}`);
                     return { signal: 'BUY', confidence: 0.8 };
                 }
-            } else {
-                console.error(`⚠️ ÉTAT INCOHÉRENT: currentPosition = ${state.currentPosition}`);
-                state.currentPosition = null;
-                state.positionAmount = 0;
-                state.positionSold = false;
             }
             
             return { signal: null, confidence: 0 };
@@ -1433,28 +1206,14 @@
             const now = Date.now();
             
             if (tradeType === 'BUY' && state.currentPosition === 'BUY') {
-                console.error('🚫 BLOQUÉ: Tentative d\'achat alors qu\'une position est déjà ouverte!');
                 return;
             }
             
             if (tradeType === 'SELL') {
-                if (state.currentPosition !== 'BUY') {
-                    console.error('🚫 BLOQUÉ: Tentative de vente sans position ouverte!');
-                    return;
-                }
-                
-                if (state.positionSold) {
-                    console.error('🚫 BLOQUÉ: Cette position a déjà été vendue!');
-                    return;
-                }
-                
-                if (state.positionAmount <= 0) {
-                    console.error('🚫 BLOQUÉ: Montant de position invalide!');
+                if (state.currentPosition !== 'BUY' || state.positionSold || state.positionAmount <= 0) {
                     return;
                 }
             }
-            
-            console.log(`📊 ${tradeType} exécuté - ${amount} USDT`);
             
             let profit = 0;
             let profitPercent = 0;
@@ -1466,7 +1225,6 @@
                 state.lastBuyTime = now;
                 state.positionSold = false;
                 document.getElementById('positionStatus').innerHTML = '🟢 Long';
-                console.log(`✅ ACHAT confirmé - Prix: ${state.currentPrice} - Position ouverte`);
                 
             } else if (tradeType === 'SELL') {
                 profitPercent = ((state.currentPrice - state.lastBuyPrice) / state.lastBuyPrice) * 100;
@@ -1481,7 +1239,6 @@
                 state.lastBuyPrice = 0;
                 
                 document.getElementById('positionStatus').innerHTML = '⚪ Aucune';
-                console.log(`✅ VENTE confirmée - Montant: ${soldAmount} USDT - Profit: ${profit.toFixed(2)} USDT (${profitPercent.toFixed(2)}%)`);
             }
             
             const trade = {
@@ -1531,179 +1288,60 @@
             document.getElementById('profitDisplay').textContent = state.portfolio.profit.toFixed(2);
         }
 
+        function openTelegramChannel() {
+            window.open(TELEGRAM_CONFIG.channelUrl, '_blank');
+        }
+
         function openDCASwap() {
             window.open('https://reboot-20.vercel.app/', '_blank');
         }
 
-        // Fonctions Telegram
-        function initializeTelegram() {
-            // Générer username
-            if (!telegramState.username) {
-                const adjectives = ['Alpha', 'Crypto', 'Diamond', 'Moon', 'Whale', 'Bull', 'Bear'];
-                const nouns = ['Trader', 'Investor', 'King', 'Master', 'Hunter', 'Pro'];
-                const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
-                const noun = nouns[Math.floor(Math.random() * nouns.length)];
-                telegramState.username = `${adj}${noun}${Math.floor(Math.random() * 999)}`;
+        function openChat() {
+            document.getElementById('chatModal').classList.remove('hidden');
+            if (!chatUsername) {
+                chatUsername = state.account ? 
+                    state.account.slice(0, 6) + '...' + state.account.slice(-4) : 
+                    'Trader' + Math.floor(Math.random() * 9999);
             }
+            loadChatMessages();
+        }
 
-            // Charger messages sauvegardés
-            const saved = localStorage.getItem('telegramMessages');
+        function closeChat() {
+            document.getElementById('chatModal').classList.add('hidden');
+        }
+
+        function loadChatMessages() {
+            const saved = localStorage.getItem('chatMessages');
             if (saved) {
-                telegramState.messages = JSON.parse(saved);
+                chatMessages = JSON.parse(saved);
             } else {
-                loadDefaultTelegramMessages();
+                chatMessages = [
+                    {
+                        username: 'Admin',
+                        message: '👋 Bienvenue sur le chat !',
+                        timestamp: Date.now() - 3600000,
+                        type: 'system'
+                    }
+                ];
             }
+            renderChatMessages();
+        }
 
-            // Charger signaux
-            loadTradingSignals();
+        function renderChatMessages() {
+            const container = document.getElementById('chatMessages');
             
-            console.log('✅ Telegram initialisé - Username:', telegramState.username);
-        }
-
-        function loadDefaultTelegramMessages() {
-            telegramState.messages = [
-                {
-                    username: 'Admin',
-                    message: '👋 Bienvenue sur le chat Telegram de la communauté Trading Pro !',
-                    timestamp: Date.now() - 7200000,
-                    type: 'system',
-                    avatar: '👨‍💼'
-                },
-                {
-                    username: 'CryptoKing',
-                    message: 'BTC vient de casser les 95k ! 🚀 Signal haussier confirmé',
-                    timestamp: Date.now() - 3600000,
-                    type: 'user',
-                    avatar: '👑'
-                },
-                {
-                    username: 'ETHTrader',
-                    message: 'Mon bot a fait +3.2% sur ETH aujourd\'hui. RSI strategy fonctionne bien',
-                    timestamp: Date.now() - 1800000,
-                    type: 'user',
-                    avatar: '💎'
-                },
-                {
-                    username: 'TradingBot',
-                    message: '🤖 Signal: BTC RSI à 68 - Possible correction à venir',
-                    timestamp: Date.now() - 900000,
-                    type: 'bot',
-                    avatar: '🤖'
-                },
-                {
-                    username: 'BNBWhale',
-                    message: 'Volume BNB en forte hausse. Qui trade sur PancakeSwap ?',
-                    timestamp: Date.now() - 300000,
-                    type: 'user',
-                    avatar: '🐋'
-                }
-            ];
-        }
-
-        function loadTradingSignals() {
-            telegramState.signals = [
-                {
-                    crypto: 'BTC',
-                    type: 'BUY',
-                    price: 94850,
-                    target: 97000,
-                    stopLoss: 93500,
-                    confidence: 85,
-                    timestamp: Date.now() - 1800000
-                },
-                {
-                    crypto: 'ETH',
-                    type: 'SELL',
-                    price: 3425,
-                    target: 3300,
-                    stopLoss: 3500,
-                    confidence: 72,
-                    timestamp: Date.now() - 3600000
-                },
-                {
-                    crypto: 'BNB',
-                    type: 'HOLD',
-                    price: 652,
-                    note: 'Attendre confirmation breakout 660',
-                    confidence: 65,
-                    timestamp: Date.now() - 5400000
-                }
-            ];
-        }
-
-        function openTelegramChannel() {
-            window.open(TELEGRAM_CONFIG.channelUrl, '_blank');
-            console.log('📢 Ouverture du canal Telegram');
-        }
-
-        function openTelegramBot() {
-            window.open(TELEGRAM_CONFIG.botUrl, '_blank');
-            console.log('🤖 Ouverture du bot Telegram');
-        }
-
-        function openIntegratedChat() {
-            document.getElementById('telegramChatModal').classList.remove('hidden');
-            telegramState.unreadCount = 0;
-            updateUnreadBadge();
-            switchTab('chat');
-            console.log('💬 Chat intégré ouvert');
-        }
-
-        function closeIntegratedChat() {
-            document.getElementById('telegramChatModal').classList.add('hidden');
-        }
-
-        function switchTab(tab) {
-            telegramState.currentTab = tab;
-            
-            // Update tab buttons
-            ['chat', 'signals', 'bot'].forEach(t => {
-                const btn = document.getElementById(t + 'Tab');
-                if (t === tab) {
-                    btn.className = 'flex-1 px-6 py-3 font-semibold transition-all border-b-2 border-blue-500 text-blue-400';
-                } else {
-                    btn.className = 'flex-1 px-6 py-3 font-semibold transition-all border-b-2 border-transparent text-gray-400 hover:text-white';
-                }
-            });
-            
-            // Load content
-            renderChatContent(tab);
-        }
-
-        function renderChatContent(tab) {
-            const container = document.getElementById('chatContent');
-            
-            if (tab === 'chat') {
-                renderChatMessages(container);
-            } else if (tab === 'signals') {
-                renderTradingSignals(container);
-            } else if (tab === 'bot') {
-                renderBotCommands(container);
-            }
-        }
-
-        function renderChatMessages(container) {
-            if (telegramState.messages.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center text-gray-400 py-8">
-                        <p class="text-4xl mb-4">💬</p>
-                        <p>Aucun message pour le moment</p>
-                    </div>
-                `;
+            if (chatMessages.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-400 py-8"><p>💬 Aucun message</p></div>';
                 return;
             }
             
-            container.innerHTML = telegramState.messages.map(msg => {
+            container.innerHTML = chatMessages.map(msg => {
                 const time = new Date(msg.timestamp).toLocaleTimeString('fr-FR', { 
                     hour: '2-digit', 
                     minute: '2-digit' 
                 });
                 
-                const isOwn = msg.username === telegramState.username;
-                const isBot = msg.type === 'bot';
-                const isSystem = msg.type === 'system';
-                
-                if (isSystem) {
+                if (msg.type === 'system') {
                     return `
                         <div class="flex justify-center my-4">
                             <div class="bg-blue-500/20 border border-blue-500/50 rounded-lg px-4 py-2 text-sm text-blue-300">
@@ -1713,27 +1351,21 @@
                     `;
                 }
                 
+                const isOwn = msg.username === chatUsername;
+                
                 return `
                     <div class="flex ${isOwn ? 'justify-end' : 'justify-start'} mb-4">
-                        <div class="max-w-[75%]">
+                        <div class="max-w-[70%]">
                             <div class="flex items-center gap-2 mb-1 ${isOwn ? 'justify-end' : 'justify-start'}">
-                                ${!isOwn ? `
-                                    <span class="text-2xl">${msg.avatar || '👤'}</span>
-                                    <span class="text-sm font-bold ${isBot ? 'text-purple-400' : 'text-blue-400'}">${escapeHtml(msg.username)}</span>
-                                ` : ''}
+                                ${!isOwn ? `<span class="text-sm font-bold text-blue-400">${escapeHtml(msg.username)}</span>` : ''}
                                 <span class="text-xs text-gray-500">${time}</span>
-                                ${isOwn ? `
-                                    <span class="text-sm font-bold text-green-400">${escapeHtml(msg.username)}</span>
-                                    <span class="text-2xl">${msg.avatar || '👤'}</span>
-                                ` : ''}
+                                ${isOwn ? `<span class="text-sm font-bold text-green-400">${escapeHtml(msg.username)}</span>` : ''}
                             </div>
                             <div class="${isOwn ? 
-                                'bg-gradient-to-r from-blue-600 to-blue-700 text-white' : 
-                                isBot ?
-                                'bg-gradient-to-r from-purple-600 to-purple-700 text-white' :
+                                'bg-gradient-to-r from-green-600 to-teal-600 text-white' : 
                                 'bg-slate-700 text-white border border-slate-600'
                             } rounded-2xl px-4 py-3 shadow-lg">
-                                <p class="text-sm leading-relaxed break-words whitespace-pre-wrap">${escapeHtml(msg.message)}</p>
+                                <p class="text-sm leading-relaxed break-words">${escapeHtml(msg.message)}</p>
                             </div>
                         </div>
                     </div>
@@ -1743,152 +1375,8 @@
             setTimeout(() => container.scrollTop = container.scrollHeight, 100);
         }
 
-        function renderTradingSignals(container) {
-            container.innerHTML = `
-                <div class="space-y-4">
-                    <div class="bg-blue-500/20 border border-blue-500 rounded-lg p-4">
-                        <h3 class="text-xl font-bold text-blue-300 mb-2">📊 Signaux de Trading du Jour</h3>
-                        <p class="text-sm text-gray-300">Analyse technique automatique mise à jour toutes les heures</p>
-                    </div>
-                    
-                    ${telegramState.signals.map(signal => {
-                        const timeDiff = Math.floor((Date.now() - signal.timestamp) / 60000);
-                        const timeStr = timeDiff < 60 ? `${timeDiff}min` : `${Math.floor(timeDiff / 60)}h`;
-                        
-                        const colors = {
-                            'BUY': 'green',
-                            'SELL': 'red',
-                            'HOLD': 'yellow'
-                        };
-                        const color = colors[signal.type];
-                        
-                        return `
-                            <div class="bg-slate-700/50 border border-${color}-500/50 rounded-lg p-4">
-                                <div class="flex justify-between items-start mb-3">
-                                    <div>
-                                        <h4 class="text-lg font-bold text-${color}-400">${signal.type} ${signal.crypto}</h4>
-                                        <p class="text-xs text-gray-400">Il y a ${timeStr}</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="text-2xl font-bold">${signal.price}</p>
-                                        <p class="text-xs text-gray-400">USDT</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="grid grid-cols-2 gap-2 mb-3">
-                                    ${signal.target ? `
-                                        <div class="bg-slate-800 rounded p-2">
-                                            <p class="text-xs text-gray-400">Target</p>
-                                            <p class="text-sm font-bold text-green-400">${signal.target}</p>
-                                        </div>
-                                    ` : ''}
-                                    ${signal.stopLoss ? `
-                                        <div class="bg-slate-800 rounded p-2">
-                                            <p class="text-xs text-gray-400">Stop Loss</p>
-                                            <p class="text-sm font-bold text-red-400">${signal.stopLoss}</p>
-                                        </div>
-                                    ` : ''}
-                                </div>
-                                
-                                ${signal.note ? `
-                                    <p class="text-sm text-gray-300 mb-2">💡 ${signal.note}</p>
-                                ` : ''}
-                                
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <div class="bg-${color}-500/20 px-2 py-1 rounded text-xs font-semibold text-${color}-400">
-                                            Confiance: ${signal.confidence}%
-                                        </div>
-                                    </div>
-                                    <button onclick="copySignal('${signal.crypto}', '${signal.type}')" class="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-xs transition-all">
-                                        📋 Copier
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                    }).join('')}
-                    
-                    <div class="bg-purple-500/20 border border-purple-500 rounded-lg p-4 text-center">
-                        <p class="text-purple-300 font-semibold mb-2">🤖 Recevez les signaux en temps réel</p>
-                        <button onclick="openTelegramBot()" class="px-6 py-2 telegram-gradient hover:opacity-90 rounded-lg font-semibold transition-all">
-                            S'abonner via Telegram
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderBotCommands(container) {
-            container.innerHTML = `
-                <div class="space-y-4">
-                    <div class="bg-purple-500/20 border border-purple-500 rounded-lg p-4">
-                        <h3 class="text-xl font-bold text-purple-300 mb-2">🤖 Commandes Bot Telegram</h3>
-                        <p class="text-sm text-gray-300">Utilisez ces commandes directement dans Telegram</p>
-                    </div>
-                    
-                    <div class="bg-slate-700/50 rounded-lg p-4">
-                        <h4 class="font-bold text-blue-300 mb-3">📱 Commandes de Base</h4>
-                        <div class="space-y-2">
-                            ${[
-                                ['/start', 'Démarrer le bot et voir le menu principal'],
-                                ['/price [CRYPTO]', 'Obtenir le prix actuel (ex: /price BTC)'],
-                                ['/signals', 'Recevoir les signaux de trading du jour'],
-                                ['/stats', 'Voir vos statistiques de trading'],
-                                ['/help', 'Liste complète des commandes']
-                            ].map(([cmd, desc]) => `
-                                <div class="flex justify-between items-center bg-slate-800 rounded p-3 hover:bg-slate-700 transition-all">
-                                    <div class="flex-1">
-                                        <code class="text-blue-400 font-mono">${cmd}</code>
-                                        <p class="text-xs text-gray-400 mt-1">${desc}</p>
-                                    </div>
-                                    <button onclick="sendTelegramCommand('${cmd}')" class="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-xs transition-all">
-                                        Tester
-                                    </button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                    
-                    <div class="bg-slate-700/50 rounded-lg p-4">
-                        <h4 class="font-bold text-green-300 mb-3">📊 Commandes Trading</h4>
-                        <div class="space-y-2">
-                            ${[
-                                ['/buy [CRYPTO] [AMOUNT]', 'Placer un ordre d\'achat'],
-                                ['/sell [CRYPTO] [AMOUNT]', 'Placer un ordre de vente'],
-                                ['/portfolio', 'Voir votre portfolio'],
-                                ['/alert [CRYPTO] [PRICE]', 'Créer une alerte de prix']
-                            ].map(([cmd, desc]) => `
-                                <div class="flex justify-between items-center bg-slate-800 rounded p-3 hover:bg-slate-700 transition-all">
-                                    <div class="flex-1">
-                                        <code class="text-green-400 font-mono">${cmd}</code>
-                                        <p class="text-xs text-gray-400 mt-1">${desc}</p>
-                                    </div>
-                                    <button onclick="sendTelegramCommand('${cmd.split('[')[0].trim()}')" class="px-3 py-1 bg-green-600 hover:bg-green-700 rounded text-xs transition-all">
-                                        Tester
-                                    </button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                    
-                    <div class="bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500 rounded-lg p-4 text-center">
-                        <p class="text-blue-300 font-semibold mb-3">💎 Fonctionnalités Premium</p>
-                        <ul class="text-sm text-gray-300 space-y-1 mb-4">
-                            <li>✅ Exécution automatique des trades</li>
-                            <li>✅ Notifications en temps réel</li>
-                            <li>✅ Analyses techniques avancées</li>
-                            <li>✅ Support prioritaire 24/7</li>
-                        </ul>
-                        <button onclick="openTelegramBot()" class="px-6 py-3 telegram-gradient hover:opacity-90 rounded-lg font-semibold transition-all">
-                            Activer sur Telegram
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function sendTelegramMessage() {
-            const input = document.getElementById('telegramInput');
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
             const message = input.value.trim();
             
             if (!message) {
@@ -1897,183 +1385,22 @@
                 return;
             }
             
-            // Check if it's a command
-            if (message.startsWith('/')) {
-                sendTelegramCommand(message);
-                input.value = '';
-                return;
-            }
-            
             const newMessage = {
-                username: telegramState.username,
+                username: chatUsername,
                 message: message,
                 timestamp: Date.now(),
-                type: 'user',
-                avatar: '👤'
+                type: 'user'
             };
             
-            telegramState.messages.push(newMessage);
-            saveTelegramMessages();
+            chatMessages.push(newMessage);
             
-            if (telegramState.currentTab === 'chat') {
-                renderChatContent('chat');
+            if (chatMessages.length > 100) {
+                chatMessages = chatMessages.slice(-100);
             }
             
+            localStorage.setItem('chatMessages', JSON.stringify(chatMessages));
+            renderChatMessages();
             input.value = '';
-            
-            // Bot auto-response simulation
-            setTimeout(() => {
-                if (message.toLowerCase().includes('btc') || message.toLowerCase().includes('bitcoin')) {
-                    addBotResponse(`Le prix actuel de BTC est de $94,850 📈`);
-                }
-            }, 1000);
-        }
-
-        function sendTelegramCommand(command) {
-            const input = document.getElementById('telegramInput');
-            input.value = command;
-            
-            // Simulate command execution
-            addBotResponse(`🤖 Commande "${command}" reçue. Exécution en cours...`);
-            
-            setTimeout(() => {
-                const responses = {
-                    '/start': 'Bienvenue ! Voici les principales commandes disponibles:\n/price - Prix actuel\n/signals - Signaux du jour\n/help - Aide',
-                    '/price': 'BTC: $94,850 (+2.3%)\nETH: $3,425 (+1.8%)\nBNB: $652 (-0.5%)',
-                    '/signals': '📊 3 signaux disponibles. Consultez l\'onglet "Signaux Trading"',
-                    '/stats': '📈 Profit total: +15.3%\n📊 Trades gagnants: 23/30\n💰 Capital: $1,250',
-                    '/help': 'Consultez la liste complète des commandes dans l\'onglet "Bot Commands"'
-                };
-                
-                const response = responses[command] || `Commande "${command}" exécutée avec succès ✅`;
-                addBotResponse(response);
-            }, 1500);
-            
-            input.value = '';
-        }
-
-        function addBotResponse(message) {
-            const botMessage = {
-                username: 'TradingBot',
-                message: message,
-                timestamp: Date.now(),
-                type: 'bot',
-                avatar: '🤖'
-            };
-            
-            telegramState.messages.push(botMessage);
-            saveTelegramMessages();
-            
-            if (telegramState.currentTab === 'chat') {
-                renderChatContent('chat');
-            }
-        }
-
-        function copySignal(crypto, type) {
-            const signal = telegramState.signals.find(s => s.crypto === crypto && s.type === type);
-            if (!signal) return;
-            
-            const text = `${type} ${crypto}\nPrix: ${signal.price}\nTarget: ${signal.target || 'N/A'}\nStop Loss: ${signal.stopLoss || 'N/A'}\nConfiance: ${signal.confidence}%`;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                alert('✅ Signal copié dans le presse-papier');
-            });
-        }
-
-        function showTelegramHelp() {
-            document.getElementById('telegramGuideModal').classList.remove('hidden');
-        }
-
-        function closeTelegramGuide() {
-            document.getElementById('telegramGuideModal').classList.add('hidden');
-        }
-
-        function saveTelegramMessages() {
-            localStorage.setItem('telegramMessages', JSON.stringify(telegramState.messages));
-        }
-
-        function updateTelegramStats() {
-            // Update online count
-            setInterval(() => {
-                const change = Math.floor(Math.random() * 10) - 5;
-                telegramState.onlineUsers = Math.max(500, telegramState.onlineUsers + change);
-                document.getElementById('telegramOnlineCount').textContent = telegramState.onlineUsers;
-                document.getElementById('telegramOnline').textContent = telegramState.onlineUsers;
-            }, 30000);
-            
-            // Update members count
-            const membersCount = Math.floor(Math.random() * 500) + 1000;
-            document.getElementById('telegramMembersCount').textContent = membersCount.toLocaleString();
-        }
-
-        function updateUnreadBadge() {
-            const badge = document.getElementById('unreadBadge');
-            if (telegramState.unreadCount > 0) {
-                badge.textContent = telegramState.unreadCount;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-        }
-
-        function startTelegramSimulation() {
-            // Simulate community activity
-            const usernames = ['AlphaTrader', 'CryptoNinja', 'MoonBoy', 'DiamondHands', 'TechAnalyst'];
-            const messages = [
-                'BTC cassant la résistance ! 🚀',
-                'Volume ETH en hausse significative',
-                'Signal haussier détecté sur BNB',
-                'Qui trade aujourd\'hui ?',
-                'Mon bot a fait +2.8% ce matin',
-                'RSI en survente, opportunité ?'
-            ];
-            
-            setInterval(() => {
-                if (Math.random() > 0.7) {
-                    const username = usernames[Math.floor(Math.random() * usernames.length)];
-                    const message = messages[Math.floor(Math.random() * messages.length)];
-                    
-                    const newMsg = {
-                        username: username,
-                        message: message,
-                        timestamp: Date.now(),
-                        type: 'user',
-                        avatar: ['👑', '💎', '🐋', '🚀', '⚡'][Math.floor(Math.random() * 5)]
-                    };
-                    
-                    telegramState.messages.push(newMsg);
-                    if (telegramState.messages.length > 100) {
-                        telegramState.messages.shift();
-                    }
-                    
-                    saveTelegramMessages();
-                    
-                    // Update preview
-                    updateTelegramPreview();
-                    
-                    // Increment unread if chat is closed
-                    if (document.getElementById('telegramChatModal').classList.contains('hidden')) {
-                        telegramState.unreadCount++;
-                        updateUnreadBadge();
-                    }
-                }
-            }, 45000); // Every 45 seconds
-        }
-
-        function updateTelegramPreview() {
-            const preview = document.getElementById('telegramPreview');
-            const recent = telegramState.messages.slice(-5).reverse();
-            
-            preview.innerHTML = recent.map(msg => `
-                <div class="bg-slate-700/50 rounded-lg p-3 text-sm">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span>${msg.avatar || '👤'}</span>
-                        <span class="font-semibold text-blue-400">${escapeHtml(msg.username)}</span>
-                        <span class="text-xs text-gray-500">${new Date(msg.timestamp).toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}</span>
-                    </div>
-                    <p class="text-gray-300 truncate">${escapeHtml(msg.message)}</p>
-                </div>
-            `).join('');
         }
 
         function escapeHtml(text) {
@@ -2086,18 +1413,6 @@
             };
             return text.replace(/[&<>"']/g, m => map[m]);
         }
-
-        function openDCASwap() {
-            window.open('https://reboot-20.vercel.app/', '_blank');
-        }
-
-        function connectWallet() {
-            // Votre fonction de connexion wallet existante
-            alert('Fonction de connexion wallet - À implémenter');
-        }
-
-        // Initialize preview on load
-        setTimeout(updateTelegramPreview, 1000);
     </script>
 </body>
 </html>
