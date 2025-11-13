@@ -458,6 +458,7 @@
 
         const POST_SELL_COOLDOWN = 120000;
         const MIN_TRADE_INTERVAL = 60000;
+        const MIN_BUY_TO_SELL_INTERVAL = 180000; // 3 minutes minimum entre achat et vente
         const PRICE_DROP_WAIT_TIME = 600000;
         const MIN_DROP_PERCENTAGE = 0.5;
 
@@ -474,10 +475,10 @@
                 minTradeInterval: 180000,
                 rsiBuyThreshold: 40,
                 rsiBuyStrong: 30,
-                rsiSellThreshold: 60,
-                rsiSellStrong: 70,
-                takeProfit: 1.5,
-                stopLoss: -1.0
+                rsiSellThreshold: 70,  // Augmenté de 60 à 70
+                rsiSellStrong: 80,      // Augmenté de 70 à 80
+                takeProfit: 2.5,        // Augmenté de 1.5% à 2.5%
+                stopLoss: -1.5
             },
             swing: { 
                 name: 'Swing', 
@@ -485,10 +486,10 @@
                 minTradeInterval: 900000,
                 rsiBuyThreshold: 35,
                 rsiBuyStrong: 25,
-                rsiSellThreshold: 70,
-                rsiSellStrong: 75,
-                takeProfit: 3.0,
-                stopLoss: -2.0
+                rsiSellThreshold: 75,  // Augmenté de 70 à 75
+                rsiSellStrong: 80,      // Augmenté de 75 à 80
+                takeProfit: 4.0,        // Augmenté de 3.0% à 4.0%
+                stopLoss: -2.5
             }
         };
 
@@ -1026,7 +1027,9 @@
                 alert('✅ Bot démarré en mode ' + (state.tradingMode === 'real' ? 'RÉEL' : 'SIMULATION') + 
                       '\n\n🛡️ Protection anti-double achat active' +
                       '\n⏱️ Attente 10 min après détection baisse' +
-                      '\n💎 Trading: BTC, ETH, BNB uniquement');
+                      '\n⏱️ Délai minimum 3 min entre achat et vente' +
+                      '\n💎 Trading: BTC, ETH, BNB uniquement' +
+                      '\n💰 Vente uniquement si profit >= 0.5% ou RSI >= 80');
             } else {
                 stopBot();
             }
@@ -1145,36 +1148,57 @@
             }
             
             if (state.currentPosition === 'BUY') {
+                console.log(`📊 Position LONG ouverte - RSI: ${rsi.toFixed(2)} - En attente signal VENTE`);
+                
                 if (rsi > strategy.rsiSellThreshold) {
                     if (state.positionSold) {
+                        console.log(`🔒 Position déjà vendue`);
                         return { signal: null, confidence: 0 };
                     }
                     
+                    // Vérifier le délai minimum de 3 minutes depuis l'achat
                     const timeSinceBuy = now - state.lastBuyTime;
-                    if (timeSinceBuy < MIN_TRADE_INTERVAL) {
+                    if (timeSinceBuy < MIN_BUY_TO_SELL_INTERVAL) {
+                        const remainingSeconds = Math.ceil((MIN_BUY_TO_SELL_INTERVAL - timeSinceBuy) / 1000);
+                        console.log(`⏱️ Délai minimum non respecté - Attente ${remainingSeconds}s avant vente possible`);
                         return { signal: null, confidence: 0 };
                     }
                     
-                    if (state.positionAmount <= 0) {
-                        state.currentPosition = null;
-                        state.positionSold = false;
+                    // Calculer le profit actuel
+                    const currentProfit = ((state.currentPrice - state.lastBuyPrice) / state.lastBuyPrice) * 100;
+                    console.log(`💰 Profit actuel: ${currentProfit.toFixed(2)}%`);
+                    
+                    // Vérifier si on a un profit minimum ou si RSI est très élevé
+                    if (currentProfit >= 0.5 || rsi >= strategy.rsiSellStrong) {
+                        if (state.positionAmount <= 0) {
+                            console.error('🚫 ERREUR: Position amount = 0');
+                            state.currentPosition = null;
+                            state.positionSold = false;
+                            return { signal: null, confidence: 0 };
+                        }
+                        
+                        console.log(`🔴 Signal VENTE validé - RSI: ${rsi.toFixed(2)} - Profit: ${currentProfit.toFixed(2)}%`);
+                        return { signal: 'SELL', confidence: 0.8 };
+                    } else {
+                        console.log(`⏳ Profit insuffisant (${currentProfit.toFixed(2)}%), attente meilleure opportunité`);
                         return { signal: null, confidence: 0 };
                     }
-                    
-                    return { signal: 'SELL', confidence: 0.8 };
                 }
             } else if (state.currentPosition === null) {
                 if (rsi < strategy.rsiBuyThreshold) {
                     const timeSinceSell = now - state.lastSellTime;
                     if (timeSinceSell < MIN_TRADE_INTERVAL && state.lastSellTime > 0) {
+                        console.log(`⏱️ Cooldown après vente`);
                         return { signal: null, confidence: 0 };
                     }
                     
                     const dropCheck = canBuyAfterDrop();
                     if (!dropCheck.canBuy) {
+                        console.log(`⏳ ${dropCheck.reason}`);
                         return { signal: null, confidence: 0 };
                     }
                     
+                    console.log(`🟢 Signal ACHAT validé - RSI: ${rsi.toFixed(2)}`);
                     return { signal: 'BUY', confidence: 0.8 };
                 }
             }
