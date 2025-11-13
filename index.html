@@ -305,6 +305,33 @@
                         <input type="number" id="slippage" value="1" step="0.1" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-400">
                         <p class="text-xs text-gray-400 mt-1">⚠️ Recommandé: 1-2% pour tokens volatils</p>
                     </div>
+
+                    <div class="p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="text-purple-400">🎯</span>
+                                <p class="font-semibold text-purple-400">Stop Suiveur</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="trailingStopToggle" checked class="sr-only peer" onchange="toggleTrailingStop()">
+                                <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                            </label>
+                        </div>
+                        <div id="trailingStopSettings">
+                            <div class="space-y-2">
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">Activation (% profit)</label>
+                                    <input type="number" id="trailingActivation" value="1.0" step="0.1" min="0.1" max="10" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-400">
+                                    <p class="text-xs text-gray-500 mt-1">Actif après ce profit</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">Trailing (%)</label>
+                                    <input type="number" id="trailingPercent" value="2.0" step="0.1" min="0.5" max="10" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-400">
+                                    <p class="text-xs text-gray-500 mt-1">Vente si baisse de ce %</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="mt-6 p-4 bg-green-400/10 border border-green-400/30 rounded-lg">
@@ -443,6 +470,13 @@
                 highestPriceTime: 0,
                 isDropping: false,
                 dropStartTime: 0
+            },
+            // STOP SUIVEUR (Trailing Stop)
+            trailingStop: {
+                enabled: true,
+                highestPriceInPosition: 0,
+                trailingPercent: 2.0,  // 2% de trailing
+                activationProfit: 1.0   // Active après 1% de profit
             }
         };
 
@@ -1023,13 +1057,18 @@
             state.botRunning = !state.botRunning;
             
             if (state.botRunning) {
+                const trailingInfo = state.trailingStop.enabled ? 
+                    `\n🎯 Stop suiveur actif: ${state.trailingStop.trailingPercent}% (après ${state.trailingStop.activationProfit}% profit)` : 
+                    '\n🎯 Stop suiveur désactivé';
+                    
                 startBot();
                 alert('✅ Bot démarré en mode ' + (state.tradingMode === 'real' ? 'RÉEL' : 'SIMULATION') + 
                       '\n\n🛡️ Protection anti-double achat active' +
                       '\n⏱️ Attente 10 min après détection baisse' +
                       '\n⏱️ Délai minimum 3 min entre achat et vente' +
                       '\n💎 Trading: BTC, ETH, BNB uniquement' +
-                      '\n💰 Vente uniquement si profit >= 0.5% ou RSI >= 80');
+                      '\n💰 Vente si profit >= 0.5% ou RSI >= 80' +
+                      trailingInfo);
             } else {
                 stopBot();
             }
@@ -1079,6 +1118,56 @@
                 botInterval = null;
                 console.log('🛑 Bot arrêté');
             }
+        }
+
+        function updateTrailingStop() {
+            // Vérifier que le stop suiveur est activé
+            if (!state.trailingStop.enabled) {
+                return { shouldSell: false };
+            }
+            
+            if (!state.currentPosition || state.currentPosition !== 'BUY') {
+                return null;
+            }
+            
+            const currentPrice = state.currentPrice;
+            const buyPrice = state.lastBuyPrice;
+            
+            // Calculer le profit actuel
+            const currentProfit = ((currentPrice - buyPrice) / buyPrice) * 100;
+            
+            // Mettre à jour le prix le plus haut atteint en position
+            if (currentPrice > state.trailingStop.highestPriceInPosition) {
+                state.trailingStop.highestPriceInPosition = currentPrice;
+                console.log(`📈 Nouveau plus haut en position: ${currentPrice.toFixed(2)} (Profit: ${currentProfit.toFixed(2)}%)`);
+            }
+            
+            // Vérifier si le stop suiveur doit être activé
+            if (currentProfit >= state.trailingStop.activationProfit) {
+                // Calculer la baisse depuis le plus haut
+                const dropFromHigh = ((state.trailingStop.highestPriceInPosition - currentPrice) / state.trailingStop.highestPriceInPosition) * 100;
+                
+                console.log(`🎯 Stop suiveur actif - Plus haut: ${state.trailingStop.highestPriceInPosition.toFixed(2)} - Actuel: ${currentPrice.toFixed(2)} - Baisse: ${dropFromHigh.toFixed(2)}%`);
+                
+                // Si le prix a baissé de X% depuis le plus haut, déclencher la vente
+                if (dropFromHigh >= state.trailingStop.trailingPercent) {
+                    const finalProfit = ((currentPrice - buyPrice) / buyPrice) * 100;
+                    console.log(`🔴 STOP SUIVEUR DÉCLENCHÉ ! Baisse de ${dropFromHigh.toFixed(2)}% depuis le plus haut - Profit final: ${finalProfit.toFixed(2)}%`);
+                    return {
+                        shouldSell: true,
+                        reason: 'trailing_stop',
+                        profit: finalProfit,
+                        highestPrice: state.trailingStop.highestPriceInPosition,
+                        dropFromHigh: dropFromHigh
+                    };
+                }
+            }
+            
+            return {
+                shouldSell: false,
+                currentProfit: currentProfit,
+                highestPrice: state.trailingStop.highestPriceInPosition
+            };
         }
 
         function updatePriceMonitoring(currentPrice) {
@@ -1148,15 +1237,34 @@
             }
             
             if (state.currentPosition === 'BUY') {
-                console.log(`📊 Position LONG ouverte - RSI: ${rsi.toFixed(2)} - En attente signal VENTE`);
+                // Vérifier le stop suiveur d'abord
+                const trailingStopCheck = updateTrailingStop();
                 
+                if (trailingStopCheck && trailingStopCheck.shouldSell) {
+                    const timeSinceBuy = now - state.lastBuyTime;
+                    if (timeSinceBuy < MIN_BUY_TO_SELL_INTERVAL) {
+                        const remainingSeconds = Math.ceil((MIN_BUY_TO_SELL_INTERVAL - timeSinceBuy) / 1000);
+                        console.log(`⏱️ Stop suiveur déclenché mais délai minimum non respecté - Attente ${remainingSeconds}s`);
+                        return { signal: null, confidence: 0 };
+                    }
+                    
+                    console.log(`🔴 VENTE PAR STOP SUIVEUR - Profit: ${trailingStopCheck.profit.toFixed(2)}% - Baisse: ${trailingStopCheck.dropFromHigh.toFixed(2)}% depuis ${trailingStopCheck.highestPrice.toFixed(2)}`);
+                    return { 
+                        signal: 'SELL', 
+                        confidence: 0.9,
+                        reason: 'trailing_stop'
+                    };
+                }
+                
+                console.log(`📊 Position LONG ouverte - RSI: ${rsi.toFixed(2)} - Profit: ${trailingStopCheck?.currentProfit?.toFixed(2)}%`);
+                
+                // Ensuite vérifier le signal RSI classique
                 if (rsi > strategy.rsiSellThreshold) {
                     if (state.positionSold) {
                         console.log(`🔒 Position déjà vendue`);
                         return { signal: null, confidence: 0 };
                     }
                     
-                    // Vérifier le délai minimum de 3 minutes depuis l'achat
                     const timeSinceBuy = now - state.lastBuyTime;
                     if (timeSinceBuy < MIN_BUY_TO_SELL_INTERVAL) {
                         const remainingSeconds = Math.ceil((MIN_BUY_TO_SELL_INTERVAL - timeSinceBuy) / 1000);
@@ -1164,11 +1272,9 @@
                         return { signal: null, confidence: 0 };
                     }
                     
-                    // Calculer le profit actuel
                     const currentProfit = ((state.currentPrice - state.lastBuyPrice) / state.lastBuyPrice) * 100;
                     console.log(`💰 Profit actuel: ${currentProfit.toFixed(2)}%`);
                     
-                    // Vérifier si on a un profit minimum ou si RSI est très élevé
                     if (currentProfit >= 0.5 || rsi >= strategy.rsiSellStrong) {
                         if (state.positionAmount <= 0) {
                             console.error('🚫 ERREUR: Position amount = 0');
@@ -1177,8 +1283,12 @@
                             return { signal: null, confidence: 0 };
                         }
                         
-                        console.log(`🔴 Signal VENTE validé - RSI: ${rsi.toFixed(2)} - Profit: ${currentProfit.toFixed(2)}%`);
-                        return { signal: 'SELL', confidence: 0.8 };
+                        console.log(`🔴 Signal VENTE RSI validé - RSI: ${rsi.toFixed(2)} - Profit: ${currentProfit.toFixed(2)}%`);
+                        return { 
+                            signal: 'SELL', 
+                            confidence: 0.8,
+                            reason: 'rsi'
+                        };
                     } else {
                         console.log(`⏳ Profit insuffisant (${currentProfit.toFixed(2)}%), attente meilleure opportunité`);
                         return { signal: null, confidence: 0 };
@@ -1248,7 +1358,12 @@
                 state.positionAmount = parseFloat(amount);
                 state.lastBuyTime = now;
                 state.positionSold = false;
+                
+                // Réinitialiser le stop suiveur
+                state.trailingStop.highestPriceInPosition = state.currentPrice;
+                
                 document.getElementById('positionStatus').innerHTML = '🟢 Long';
+                console.log(`✅ ACHAT confirmé - Prix: ${state.currentPrice} - Stop suiveur initialisé`);
                 
             } else if (tradeType === 'SELL') {
                 profitPercent = ((state.currentPrice - state.lastBuyPrice) / state.lastBuyPrice) * 100;
@@ -1426,6 +1541,40 @@
             renderChatMessages();
             input.value = '';
         }
+
+        function toggleTrailingStop() {
+            const toggle = document.getElementById('trailingStopToggle');
+            state.trailingStop.enabled = toggle.checked;
+            
+            const settings = document.getElementById('trailingStopSettings');
+            if (toggle.checked) {
+                settings.style.display = 'block';
+                console.log('🎯 Stop suiveur ACTIVÉ');
+            } else {
+                settings.style.display = 'none';
+                console.log('🎯 Stop suiveur DÉSACTIVÉ');
+            }
+        }
+
+        // Mise à jour dynamique des paramètres du stop suiveur
+        document.addEventListener('DOMContentLoaded', () => {
+            const activationInput = document.getElementById('trailingActivation');
+            const percentInput = document.getElementById('trailingPercent');
+            
+            if (activationInput) {
+                activationInput.addEventListener('change', (e) => {
+                    state.trailingStop.activationProfit = parseFloat(e.target.value);
+                    console.log(`🎯 Stop suiveur - Activation: ${state.trailingStop.activationProfit}%`);
+                });
+            }
+            
+            if (percentInput) {
+                percentInput.addEventListener('change', (e) => {
+                    state.trailingStop.trailingPercent = parseFloat(e.target.value);
+                    console.log(`🎯 Stop suiveur - Trailing: ${state.trailingStop.trailingPercent}%`);
+                });
+            }
+        });
 
         function escapeHtml(text) {
             const map = {
